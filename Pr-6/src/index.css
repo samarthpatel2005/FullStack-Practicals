@@ -1,0 +1,84 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+
+body {
+  background-color: #1e1e2f;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: #2a2a40;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 350px;
+  max-width: 400px;
+  text-align: center;
+  border: 2px solid #7f5af0;
+}
+
+.container h1 {
+  margin-bottom: 1.5rem;
+}
+
+.input-container {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.input-container input {
+  flex: 1;
+  padding: 0.6rem;
+  border: none;
+  outline: none;
+  background: #1e1e2f;
+  color: white;
+  border: 1px solid #444;
+  border-radius: 5px 0 0 5px;
+}
+
+.input-container button {
+  background: #a78bfa;
+  color: black;
+  border: none;
+  padding: 0 1rem;
+  cursor: pointer;
+  border-radius: 0 5px 5px 0;
+  transition: 0.3s;
+}
+
+.input-container button:hover {
+  background: #7c3aed;
+  color: white;
+}
+
+.task {
+  background: #7c3aed;
+  color: white;
+  margin: 0.5rem 0;
+  padding: 0.8rem;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icons .icon {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.icon.edit:hover {
+  color: #fff176;
+}
+
+.icon.delete:hover {
+  color: #f87171;
+}
