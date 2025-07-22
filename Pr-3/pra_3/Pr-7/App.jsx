@@ -1,5 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { Link, Route, Routes } from "react-router-dom";
 import "./App.css";
+import About from "./src/pages/About.jsx";
+import Contact from "./src/pages/Contact.jsx";
+import Home from "./src/pages/Home.jsx";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,14 +19,17 @@ function App() {
       </button>
 
       <div className={`sidebar ${isOpen ? "open" : ""}`}>
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
+        <Link to="/" onClick={toggleSidebar}>Home</Link>
+        <Link to="/about" onClick={toggleSidebar}>About</Link>
+        <Link to="/contact" onClick={toggleSidebar}>Contact</Link>
       </div>
 
       <div className="content">
-        <h1>Welcome to My Website</h1>
-        <p>This is the main content of the webpage.</p>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
       </div>
     </div>
   );
