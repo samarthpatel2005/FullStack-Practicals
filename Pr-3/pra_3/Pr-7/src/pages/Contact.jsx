@@ -26,7 +26,7 @@ const Contact = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
   const [userLocation, setUserLocation] = useState(null);
-  const [mapCenter, setMapCenter] = useState([40.7128, -74.0060]); // Default to NYC
+  const [mapCenter, setMapCenter] = useState([23.8103, 72.3911]); // Unjha, Gujarat coordinates
 
   // Get user's current location
   React.useEffect(() => {
@@ -99,24 +99,18 @@ const Contact = () => {
 
   const contactInfo = [
     { icon: '📧', label: 'Email', value: 'contact@company.com' },
-    { icon: '📞', label: 'Phone', value: '+1 (555) 123-4567' },
-    { icon: '📍', label: 'Address', value: '123 Tech Street, Digital City, DC 12345' },
+    { icon: '📞', label: 'Phone', value: '+91 9876543210' },
+    { icon: '📍', label: 'Address', value: 'Dhanji Nagar, Unjha, Gujarat 384170' },
     { icon: '🕐', label: 'Hours', value: 'Mon-Fri 9AM-6PM' }
   ];
 
   // Company locations for the map
   const companyLocations = [
     {
-      position: [40.7128, -74.0060],
+      position: [23.8103, 72.3911], // Unjha, Gujarat coordinates
       name: "Main Office",
-      address: "123 Tech Street, Digital City, DC 12345",
-      phone: "+1 (555) 123-4567"
-    },
-    {
-      position: [40.7589, -73.9851],
-      name: "Branch Office",
-      address: "456 Innovation Ave, Tech City, TC 67890",
-      phone: "+1 (555) 987-6543"
+      address: "Dhanji Nagar, Unjha, Gujarat 384170",
+      phone: "+91 9876543210"
     }
   ];
 
@@ -262,7 +256,7 @@ const Contact = () => {
               <p className="location-phone">📞 {location.phone}</p>
               <button 
                 className="location-btn"
-                onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${location.position[0]},${location.position[1]}`, '_blank')}
+                onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=Dhanji+Nagar+Unjha+Gujarat+384170`, '_blank')}
               >
                 View on Google Maps
               </button>
