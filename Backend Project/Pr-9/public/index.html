@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Product Site</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Welcome to Our Product Site</h1>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section id="home" class="section">
+                <h2>Express Framework Demo</h2>
+                <p>This is a proof of concept for our Express JS backend server.</p>
+                <p>The server demonstrates clean, scalable code structure for future features.</p>
+                
+                <div class="api-demo">
+                    <h3>API Endpoints</h3>
+                    <button id="test-home">Test Home Route</button>
+                    <button id="test-products">Test Products API</button>
+                    <button id="test-about">Test About API</button>
+                    
+                    <div id="api-response" class="response-display">
+                        <h4>API Response:</h4>
+                        <pre id="response-content">Click a button to test API endpoints</pre>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Our Company. Practical 9 - Express Server Demo</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

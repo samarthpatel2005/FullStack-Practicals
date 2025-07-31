@@ -1,0 +1,182 @@
+/* Product Site Styles - Clean and Professional Design */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Header Styles */
+header {
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    color: white;
+    padding: 2rem;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+nav a {
+    color: #ecf0f1;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+nav a:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+}
+
+/* Main Content */
+main {
+    padding: 3rem;
+}
+
+.section h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 0.5rem;
+}
+
+.section p {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: #555;
+}
+
+/* API Demo Section */
+.api-demo {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 10px;
+    margin-top: 2rem;
+    border-left: 5px solid #3498db;
+}
+
+.api-demo h3 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+/* Button Styles */
+button {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    margin: 0.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+button:hover {
+    background: linear-gradient(135deg, #2980b9, #1f639a);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+
+button:active {
+    transform: translateY(-1px);
+}
+
+/* Response Display */
+.response-display {
+    background: #2c3e50;
+    color: #ecf0f1;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-top: 1.5rem;
+    border: 2px solid #34495e;
+}
+
+.response-display h4 {
+    color: #3498db;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+#response-content {
+    background: #34495e;
+    padding: 1rem;
+    border-radius: 5px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    border-left: 4px solid #3498db;
+}
+
+/* Footer */
+footer {
+    background: #34495e;
+    color: #ecf0f1;
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        margin: 0;
+        border-radius: 0;
+    }
+    
+    nav ul {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    main {
+        padding: 1.5rem;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    button {
+        display: block;
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+}
