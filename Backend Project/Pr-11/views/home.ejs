@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - Express.js Template</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-rocket"></i>
+                <span>Home Template</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="/home" class="nav-link active">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/api/info" class="nav-link" target="_blank">
+                        <i class="fas fa-info-circle"></i> API Info
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/health" class="nav-link" target="_blank">
+                        <i class="fas fa-heartbeat"></i> Health
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <i class="fas fa-users"></i>
+                        Welcome to Home Page Template Project!
+                    </h1>
+                    <!-- <p class="hero-subtitle">
+                        🎉 Congratulations on setting up your Express.js project template!
+                    </p> -->
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <i class="fas fa-clock"></i>
+                            <span>Started: <%= teamInfo.currentTime %></span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-code"></i>
+                            <span>Version: <%= teamInfo.version %></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Project Info Section -->
+            <section class="project-info">
+                <div class="info-grid">
+                    <div class="info-card">
+                        <div class="card-header">
+                            <i class="fas fa-project-diagram"></i>
+                            <h3>Project Details</h3>
+                        </div>
+                        <div class="card-content">
+                            <h4><%= teamInfo.projectName %></h4>
+                            <p><%= teamInfo.description %></p>
+                            <div class="project-meta">
+                                <span class="badge">Express.js</span>
+                                <span class="badge">Node.js</span>
+                                <span class="badge">EJS</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="card-header">
+                            <i class="fas fa-star"></i>
+                            <h3>Features Included</h3>
+                        </div>
+                        <div class="card-content">
+                            <ul class="features-list">
+                                <% teamInfo.features.forEach(feature => { %>
+                                    <li>
+                                        <i class="fas fa-check"></i>
+                                        <%= feature %>
+                                    </li>
+                                <% }); %>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Getting Started Section -->
+            <section class="getting-started">
+                <h2><i class="fas fa-play-circle"></i> Getting Started</h2>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Explore the Structure</h3>
+                            <p>Familiarize yourself with the project structure and existing routes.</p>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Add Your Routes</h3>
+                            <p>Start adding your own routes and middleware to build your application.</p>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Customize Design</h3>
+                            <p>Modify the CSS and templates to match your project's branding.</p>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3>Deploy & Scale</h3>
+                            <p>Deploy your application and scale it according to your needs.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="quick-actions">
+                <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+                <div class="actions-grid">
+                    <a href="/api/info" class="action-btn" target="_blank">
+                        <i class="fas fa-info-circle"></i>
+                        <span>View API Info</span>
+                    </a>
+                    <a href="/health" class="action-btn" target="_blank">
+                        <i class="fas fa-heartbeat"></i>
+                        <span>Check Health</span>
+                    </a>
+                    <button class="action-btn" onclick="showServerInfo()">
+                        <i class="fas fa-server"></i>
+                        <span>Server Info</span>
+                    </button>
+                    <button class="action-btn" onclick="refreshPage()">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Refresh</span>
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Express.js Project Template. Ready for your next big idea! 🚀</p>
+        </div>
+    </footer>
+
+    <!-- Modal for server info -->
+    <div id="serverModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2><i class="fas fa-server"></i> Server Information</h2>
+            <div id="serverInfo">Loading...</div>
+        </div>
+    </div>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>

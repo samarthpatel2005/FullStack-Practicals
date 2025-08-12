@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Viewer - <%= filename %></title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📄 Log Viewer</h1>
+            <div class="breadcrumb">
+                <a href="/">← Back to Log List</a> / <span><%= filename %></span>
+            </div>
+        </header>
+
+        <main>
+            <div class="log-header">
+                <h2><%= filename %></h2>
+                <div class="log-actions">
+                    <button onclick="copyToClipboard()" class="btn btn-secondary">📋 Copy</button>
+                    <button onclick="downloadLog()" class="btn btn-secondary">💾 Download</button>
+                    <button onclick="refreshLog()" class="btn btn-primary">🔄 Refresh</button>
+                </div>
+            </div>
+
+            <% if (error) { %>
+                <div class="alert alert-error">
+                    <h3>⚠️ Error</h3>
+                    <p><%= error %></p>
+                </div>
+            <% } else { %>
+                <div class="log-content-container">
+                    <div class="log-stats">
+                        <span class="stat">Lines: <span id="line-count">0</span></span>
+                        <span class="stat">Characters: <span id="char-count">0</span></span>
+                        <input type="text" id="search-input" placeholder="Search in log..." />
+                    </div>
+                    
+                    <div class="log-content" id="log-content">
+                        <pre><code><%= content %></code></pre>
+                    </div>
+                </div>
+            <% } %>
+        </main>
+
+        <footer>
+            <p>Error Log Viewer - Built with Express.js</p>
+        </footer>
+    </div>
+
+    <script>
+        const filename = '<%= filename %>';
+        const logContent = document.getElementById('log-content');
+        const searchInput = document.getElementById('search-input');
+        
+        // Initialize stats
+        if (logContent) {
+            const content = logContent.textContent;
+            document.getElementById('line-count').textContent = content.split('\n').length;
+            document.getElementById('char-count').textContent = content.length;
+        }
+
+        function copyToClipboard() {
+            if (logContent) {
+                const text = logContent.textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    showNotification('Content copied to clipboard!');
+                });
+            }
+        }
+
+        function downloadLog() {
+            window.open(`/api/log/${filename}`, '_blank');
+        }
+
+        function refreshLog() {
+            window.location.reload();
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Search functionality
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const content = logContent.querySelector('code');
+                
+                if (searchTerm) {
+                    const text = content.textContent;
+                    const regex = new RegExp(`(${searchTerm})`, 'gi');
+                    const highlightedText = text.replace(regex, '<mark>$1</mark>');
+                    content.innerHTML = highlightedText;
+                } else {
+                    // Reset to original content
+                    content.textContent = content.textContent;
+                }
+            });
+        }
+    </script>
+</body>
+</html>

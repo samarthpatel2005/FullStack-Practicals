@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - Express.js Template</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-rocket"></i>
+                <span>Express Template</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="/home" class="nav-link">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="error-container">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h1 class="error-title"><%= error %></h1>
+                <p class="error-message"><%= message %></p>
+                <div class="error-actions">
+                    <a href="<%= backLink %>" class="btn btn-primary">
+                        <i class="fas fa-arrow-left"></i>
+                        Go Back Home
+                    </a>
+                    <button onclick="window.history.back()" class="btn btn-secondary">
+                        <i class="fas fa-undo"></i>
+                        Previous Page
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Express.js Project Template</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Log Viewer</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 Error Log Viewer</h1>
+            <p>Browse and view server error logs</p>
+        </header>
+
+        <main>
+            <% if (error) { %>
+                <div class="alert alert-error">
+                    <h3>⚠️ Error</h3>
+                    <p><%= error %></p>
+                </div>
+            <% } %>
+
+            <% if (files && files.length > 0) { %>
+                <div class="log-list">
+                    <h2>📄 Available Log Files</h2>
+                    <div class="file-grid">
+                        <% files.forEach(file => { %>
+                            <div class="file-card">
+                                <div class="file-icon">📄</div>
+                                <div class="file-info">
+                                    <h3><%= file %></h3>
+                                    <div class="file-actions">
+                                        <a href="/log/<%= file %>" class="btn btn-primary">View Log</a>
+                                        <a href="/api/log/<%= file %>" class="btn btn-secondary" target="_blank">Download JSON</a>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+            <% } else if (!error) { %>
+                <div class="alert alert-info">
+                    <h3>📂 No Log Files Found</h3>
+                    <p>Create a "logs" folder and add some .txt files to get started.</p>
+                </div>
+            <% } %>
+
+            <div class="instructions">
+                <h3>💡 How to Use</h3>
+                <ul>
+                    <li>Place your .txt log files in the <code>logs</code> folder</li>
+                    <li>Click "View Log" to read the file content in your browser</li>
+                    <li>Use "Download JSON" to get file data as JSON via API</li>
+                    <li>Only .txt files are supported for security reasons</li>
+                </ul>
+            </div>
+        </main>
+
+        <footer>
+            <p>Error Log Viewer - Built with Express.js</p>
+        </footer>
+    </div>
+
+    <script src="/script.js"></script>
+</body>
+</html>
