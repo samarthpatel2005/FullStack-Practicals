@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧮 Kids Calculator - Fun Math Learning!</title>
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="stars">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <h1 class="title">
+                <i class="fas fa-calculator calculator-icon"></i>
+                Kids Calculator
+                <i class="fas fa-star star-icon"></i>
+            </h1>
+            <p class="subtitle">Learn math with fun! 🎉</p>
+        </header>
+
+        <div class="calculator-container">
+            <!-- Calculator Form -->
+            <div class="calculator-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-edit"></i> Let's Calculate!</h2>
+                </div>
+                
+                <form action="/calculate" method="POST" class="calculator-form">
+                    <div class="input-group">
+                        <label for="num1">
+                            <i class="fas fa-sort-numeric-up"></i>
+                            First Number
+                        </label>
+                        <input 
+                            type="text" 
+                            id="num1" 
+                            name="num1" 
+                            value="<%= num1 %>" 
+                            placeholder="Enter first number..."
+                            class="number-input"
+                            autocomplete="off"
+                        >
+                    </div>
+
+                    <div class="operation-group">
+                        <label><i class="fas fa-cogs"></i> Choose Operation:</label>
+                        <div class="operation-buttons">
+                            <label class="operation-btn <%= operation === 'add' ? 'selected' : '' %>">
+                                <input type="radio" name="operation" value="add" <%= operation === 'add' ? 'checked' : '' %>>
+                                <span class="btn-content">
+                                    <i class="fas fa-plus"></i>
+                                    Add (+)
+                                </span>
+                            </label>
+                            
+                            <label class="operation-btn <%= operation === 'subtract' ? 'selected' : '' %>">
+                                <input type="radio" name="operation" value="subtract" <%= operation === 'subtract' ? 'checked' : '' %>>
+                                <span class="btn-content">
+                                    <i class="fas fa-minus"></i>
+                                    Subtract (-)
+                                </span>
+                            </label>
+                            
+                            <label class="operation-btn <%= operation === 'multiply' ? 'selected' : '' %>">
+                                <input type="radio" name="operation" value="multiply" <%= operation === 'multiply' ? 'checked' : '' %>>
+                                <span class="btn-content">
+                                    <i class="fas fa-times"></i>
+                                    Multiply (×)
+                                </span>
+                            </label>
+                            
+                            <label class="operation-btn <%= operation === 'divide' ? 'selected' : '' %>">
+                                <input type="radio" name="operation" value="divide" <%= operation === 'divide' ? 'checked' : '' %>>
+                                <span class="btn-content">
+                                    <i class="fas fa-divide"></i>
+                                    Divide (÷)
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="num2">
+                            <i class="fas fa-sort-numeric-down"></i>
+                            Second Number
+                        </label>
+                        <input 
+                            type="text" 
+                            id="num2" 
+                            name="num2" 
+                            value="<%= num2 %>" 
+                            placeholder="Enter second number..."
+                            class="number-input"
+                            autocomplete="off"
+                        >
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="calculate-btn">
+                            <i class="fas fa-calculator"></i>
+                            Calculate!
+                        </button>
+                        <button type="button" class="clear-btn" onclick="clearForm()">
+                            <i class="fas fa-eraser"></i>
+                            Clear
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Result Display -->
+            <div class="result-container">
+                <% if (error) { %>
+                    <div class="result-card error-card">
+                        <div class="result-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>Oops! Something went wrong</h3>
+                        <p class="error-message"><%= error %></p>
+                        <div class="tips">
+                            <h4><i class="fas fa-lightbulb"></i> Tips:</h4>
+                            <ul>
+                                <li>Use only numbers (0-9)</li>
+                                <li>Don't divide by zero</li>
+                                <li>Choose an operation</li>
+                            </ul>
+                        </div>
+                    </div>
+                <% } else if (result !== null) { %>
+                    <div class="result-card success-card">
+                        <div class="result-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h3>Great job! 🎉</h3>
+                        <div class="calculation">
+                            <%= num1 %> 
+                            <span class="operator">
+                                <% if (operation === 'add') { %>+<% } %>
+                                <% if (operation === 'subtract') { %>-<% } %>
+                                <% if (operation === 'multiply') { %>×<% } %>
+                                <% if (operation === 'divide') { %>÷<% } %>
+                            </span>
+                            <%= num2 %> = 
+                            <span class="result-number"><%= result %></span>
+                        </div>
+                        <div class="celebration">
+                            <span class="emoji">🌟</span>
+                            <span class="emoji">🎊</span>
+                            <span class="emoji">🎈</span>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+
+            <!-- History Section -->
+            <% if (history && history.length > 0) { %>
+                <div class="history-container">
+                    <div class="history-header">
+                        <h3><i class="fas fa-history"></i> Recent Calculations</h3>
+                        <form action="/clear-history" method="POST" style="display: inline;">
+                            <button type="submit" class="clear-history-btn">
+                                <i class="fas fa-trash-alt"></i>
+                                Clear History
+                            </button>
+                        </form>
+                    </div>
+                    <div class="history-list">
+                        <% history.forEach((calc, index) => { %>
+                            <div class="history-item">
+                                <div class="calc-expression">
+                                    <%= calc.num1 %> 
+                                    <span class="operator">
+                                        <% if (calc.operation === 'add') { %>+<% } %>
+                                        <% if (calc.operation === 'subtract') { %>-<% } %>
+                                        <% if (calc.operation === 'multiply') { %>×<% } %>
+                                        <% if (calc.operation === 'divide') { %>÷<% } %>
+                                    </span>
+                                    <%= calc.num2 %> = <%= calc.result %>
+                                </div>
+                                <div class="calc-time"><%= calc.timestamp %></div>
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+
+        <footer class="footer">
+            <p>Made with ❤️ for young mathematicians! Keep practicing! 📚</p>
+        </footer>
+    </div>
+
+    <script src="/script.js"></script>
+</body>
+</html>
