@@ -8,11 +8,13 @@
     "start:pr10": "node Pr-10/server.js",
     "start:pr11": "node Pr-11/server.js",
     "start:pr12": "node Pr-12/server.js",
+    "start:pr13": "node Pr-13/server.js",
     "pr8": "node Pr-8/server.js",
     "pr9": "node Pr-9/server.js",
     "pr10": "node Pr-10/server.js",
     "pr11": "node Pr-11/server.js",
     "pr12": "node Pr-12/server.js",
+    "pr13": "node Pr-13/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

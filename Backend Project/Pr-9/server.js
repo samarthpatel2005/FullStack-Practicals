@@ -28,7 +28,7 @@ app.get('/about', (req, res) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`✅ Product Site Server running at http://localhost:${PORT}`);
   console.log('📝 Visit http://localhost:3000 to see "Welcome to our site"');
