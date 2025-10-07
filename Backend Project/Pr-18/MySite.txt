@@ -1,3 +1,5 @@
 My site : https://auto-blog-generator-lake.vercel.app/
 
+repo link : https://github.com/samarthpatel2005/blog-_generator.git
+
 do 3-4 time refresh this site because backend is running render is slow 
