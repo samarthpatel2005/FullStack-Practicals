@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-body">
+    <!-- Background Animation -->
+    <div class="auth-background">
+        <div class="floating-book book-1">📚</div>
+        <div class="floating-book book-2">📖</div>
+        <div class="floating-book book-3">📕</div>
+        <div class="floating-book book-4">📗</div>
+        <div class="floating-book book-5">📘</div>
+    </div>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <!-- Header -->
+            <div class="auth-header">
+                <div class="library-icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <h1 class="auth-title">Join Library Portal</h1>
+                <p class="auth-subtitle">Create your account to access our digital library</p>
+            </div>
+
+            <!-- Alert Messages -->
+            <% if (error) { %>
+                <div class="alert alert-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span><%= error %></span>
+                </div>
+            <% } %>
+
+            <% if (success) { %>
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    <span><%= success %></span>
+                </div>
+            <% } %>
+
+            <!-- Registration Form -->
+            <form action="/register" method="POST" class="auth-form" id="registerForm">
+                <div class="form-group">
+                    <label for="name" class="form-label">
+                        <i class="fas fa-id-card"></i>
+                        Full Name
+                    </label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        class="form-input" 
+                        placeholder="Enter your full name"
+                        required
+                        autocomplete="name"
+                        minlength="2"
+                        maxlength="50"
+                    >
+                    <small class="field-help">Your display name in the portal</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="username" class="form-label">
+                        <i class="fas fa-user"></i>
+                        Username
+                    </label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        class="form-input" 
+                        placeholder="Choose a unique username"
+                        required
+                        autocomplete="username"
+                        pattern="[a-zA-Z0-9_]+"
+                        minlength="3"
+                        maxlength="20"
+                    >
+                    <small class="field-help">Letters, numbers, and underscores only (3-20 characters)</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">
+                        <i class="fas fa-lock"></i>
+                        Password
+                    </label>
+                    <div class="password-input-group">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-input" 
+                            placeholder="Create a secure password"
+                            required
+                            autocomplete="new-password"
+                            minlength="6"
+                        >
+                        <button type="button" class="password-toggle" onclick="togglePassword('password', 'passwordToggleIcon')">
+                            <i class="fas fa-eye" id="passwordToggleIcon"></i>
+                        </button>
+                    </div>
+                    <div class="password-strength" id="passwordStrength"></div>
+                    <small class="field-help">At least 6 characters required</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword" class="form-label">
+                        <i class="fas fa-lock"></i>
+                        Confirm Password
+                    </label>
+                    <div class="password-input-group">
+                        <input 
+                            type="password" 
+                            id="confirmPassword" 
+                            name="confirmPassword" 
+                            class="form-input" 
+                            placeholder="Confirm your password"
+                            required
+                            autocomplete="new-password"
+                        >
+                        <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword', 'confirmToggleIcon')">
+                            <i class="fas fa-eye" id="confirmToggleIcon"></i>
+                        </button>
+                    </div>
+                    <div class="password-match" id="passwordMatch"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="terms" required>
+                        <span class="checkmark"></span>
+                        I agree to the <a href="#" onclick="showTerms()">Terms of Service</a> and <a href="#" onclick="showPrivacy()">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="auth-btn" id="submitBtn" disabled>
+                    <i class="fas fa-user-plus"></i>
+                    Create Account
+                </button>
+            </form>
+
+            <!-- Links -->
+            <div class="auth-links">
+                <p>Already have an account? <a href="/login">Sign in here</a></p>
+            </div>
+
+            <!-- Registration Benefits -->
+            <div class="benefits-info">
+                <h4><i class="fas fa-gift"></i> Membership Benefits</h4>
+                <div class="benefits-list">
+                    <div class="benefit-item">
+                        <i class="fas fa-book-open"></i>
+                        <span>Access to digital library</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Personal reading statistics</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-users"></i>
+                        <span>Community features</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Secure session management</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms Modal -->
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Terms of Service</h3>
+                <button class="modal-close" onclick="closeModal('termsModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>By using this Library Portal, you agree to:</p>
+                <ul>
+                    <li>Use the service responsibly and ethically</li>
+                    <li>Respect other users and library resources</li>
+                    <li>Maintain the security of your account</li>
+                    <li>Follow all applicable laws and regulations</li>
+                    <li>Report any security issues or bugs</li>
+                </ul>
+                <p>This is a demo application for educational purposes.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Modal -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Privacy Policy</h3>
+                <button class="modal-close" onclick="closeModal('privacyModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>We protect your privacy by:</p>
+                <ul>
+                    <li>Storing only necessary account information</li>
+                    <li>Using secure session management</li>
+                    <li>Not sharing your data with third parties</li>
+                    <li>Implementing proper security measures</li>
+                    <li>Allowing you to delete your account anytime</li>
+                </ul>
+                <p>This demo stores data in memory only - no persistent storage.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-focus on name field
+        document.getElementById('name').focus();
+
+        // Password toggle functionality
+        function togglePassword(inputId, iconId) {
+            const passwordInput = document.getElementById(inputId);
+            const toggleIcon = document.getElementById(iconId);
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Password strength checker
+        function checkPasswordStrength(password) {
+            const strengthIndicator = document.getElementById('passwordStrength');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            let strength = 0;
+            let feedback = [];
+            
+            if (password.length >= 6) strength++;
+            else feedback.push('At least 6 characters');
+            
+            if (/[a-z]/.test(password)) strength++;
+            else feedback.push('Lowercase letter');
+            
+            if (/[A-Z]/.test(password)) strength++;
+            else feedback.push('Uppercase letter');
+            
+            if (/[0-9]/.test(password)) strength++;
+            else feedback.push('Number');
+            
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            else feedback.push('Special character');
+            
+            const strengthLevels = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
+            const strengthColors = ['#ff4444', '#ff8800', '#ffcc00', '#88cc00', '#44cc44'];
+            
+            if (password.length > 0) {
+                strengthIndicator.innerHTML = `
+                    <div class="strength-bar">
+                        <div class="strength-fill" style="width: ${(strength/5)*100}%; background-color: ${strengthColors[strength-1] || '#ff4444'}"></div>
+                    </div>
+                    <span class="strength-text" style="color: ${strengthColors[strength-1] || '#ff4444'}">
+                        ${strengthLevels[strength-1] || 'Very Weak'}
+                    </span>
+                `;
+            } else {
+                strengthIndicator.innerHTML = '';
+            }
+            
+            validateForm();
+        }
+
+        // Password match checker
+        function checkPasswordMatch() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const matchIndicator = document.getElementById('passwordMatch');
+            
+            if (confirmPassword.length > 0) {
+                if (password === confirmPassword) {
+                    matchIndicator.innerHTML = '<span class="match-success"><i class="fas fa-check"></i> Passwords match</span>';
+                } else {
+                    matchIndicator.innerHTML = '<span class="match-error"><i class="fas fa-times"></i> Passwords do not match</span>';
+                }
+            } else {
+                matchIndicator.innerHTML = '';
+            }
+            
+            validateForm();
+        }
+
+        // Form validation
+        function validateForm() {
+            const name = document.getElementById('name').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const terms = document.getElementById('terms').checked;
+            const submitBtn = document.getElementById('submitBtn');
+            
+            const isValid = name.length >= 2 && 
+                           username.length >= 3 && 
+                           password.length >= 6 && 
+                           password === confirmPassword && 
+                           terms;
+            
+            submitBtn.disabled = !isValid;
+            submitBtn.style.opacity = isValid ? '1' : '0.6';
+        }
+
+        // Username validation
+        function validateUsername() {
+            const username = document.getElementById('username');
+            const value = username.value.toLowerCase();
+            
+            // Remove invalid characters
+            username.value = value.replace(/[^a-z0-9_]/g, '');
+            
+            validateForm();
+        }
+
+        // Event listeners
+        document.getElementById('name').addEventListener('input', validateForm);
+        document.getElementById('username').addEventListener('input', validateUsername);
+        document.getElementById('password').addEventListener('input', function() {
+            checkPasswordStrength(this.value);
+        });
+        document.getElementById('confirmPassword').addEventListener('input', checkPasswordMatch);
+        document.getElementById('terms').addEventListener('change', validateForm);
+
+        // Form submission with loading state
+        document.getElementById('registerForm').addEventListener('submit', function() {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+            submitBtn.disabled = true;
+        });
+
+        // Modal functions
+        function showTerms() {
+            document.getElementById('termsModal').style.display = 'flex';
+        }
+
+        function showPrivacy() {
+            document.getElementById('privacyModal').style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Close modals when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // Auto-hide alerts after 5 seconds
+        setTimeout(() => {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.style.animation = 'slideUp 0.3s ease forwards';
+            });
+        }, 5000);
+
+        console.log('📝 Registration Page Loaded');
+        console.log('🔒 Real-time validation and password strength checking enabled');
+    </script>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Tuition Admin</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="/students" class="nav-link"><i class="fas fa-users"></i> Students</a></li>
+                <li><a href="/students/add" class="nav-link"><i class="fas fa-user-plus"></i> Add Student</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Header -->
+        <div class="page-header">
+            <h1><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
+            <p>Overview of your tuition class management</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon students">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-content">
+                    <h3><%= totalStudents %></h3>
+                    <p>Total Students</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon paid">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3><%= paidStudents %></h3>
+                    <p>Fees Paid</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon pending">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-content">
+                    <h3><%= pendingFees %></h3>
+                    <p>Fees Pending</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon overdue">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3><%= overdueFees %></h3>
+                    <p>Fees Overdue</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Revenue Card -->
+        <div class="revenue-card">
+            <div class="revenue-content">
+                <h3><i class="fas fa-rupee-sign"></i> Total Revenue</h3>
+                <div class="revenue-amount">₹<%= totalRevenue.toLocaleString() %></div>
+                <p>From paid fees this month</p>
+            </div>
+        </div>
+
+        <!-- Charts and Tables -->
+        <div class="dashboard-grid">
+            <!-- Class Distribution -->
+            <div class="chart-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-chart-pie"></i> Class Distribution</h3>
+                </div>
+                <div class="card-body">
+                    <div class="class-distribution">
+                        <% classDistribution.forEach(item => { %>
+                            <div class="class-item">
+                                <span class="class-name">Class <%= item._id %></span>
+                                <span class="class-count"><%= item.count %> students</span>
+                                <div class="class-bar">
+                                    <div class="class-fill" style="width: <%= (item.count / totalStudents) * 100 %>%"></div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subject Distribution -->
+            <div class="chart-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-book"></i> Subject Distribution</h3>
+                </div>
+                <div class="card-body">
+                    <div class="subject-distribution">
+                        <% subjectDistribution.forEach(item => { %>
+                            <div class="subject-item">
+                                <span class="subject-name"><%= item._id %></span>
+                                <span class="subject-count"><%= item.count %></span>
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Students -->
+        <div class="recent-students-card">
+            <div class="card-header">
+                <h3><i class="fas fa-user-clock"></i> Recent Students</h3>
+                <a href="/students" class="view-all-btn">View All</a>
+            </div>
+            <div class="card-body">
+                <div class="students-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Class</th>
+                                <th>Subject</th>
+                                <th>Fee Status</th>
+                                <th>Join Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% recentStudents.forEach(student => { %>
+                                <tr>
+                                    <td>
+                                        <div class="student-info">
+                                            <div class="student-avatar">
+                                                <%= student.name.charAt(0).toUpperCase() %>
+                                            </div>
+                                            <div>
+                                                <div class="student-name"><%= student.name %></div>
+                                                <div class="student-email"><%= student.email %></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="class-badge">Class <%= student.class %></span></td>
+                                    <td><%= student.subject %></td>
+                                    <td>
+                                        <span class="fee-status <%= student.feeStatus.toLowerCase() %>">
+                                            <% if (student.feeStatus === 'Paid') { %>
+                                                <i class="fas fa-check-circle"></i>
+                                            <% } else if (student.feeStatus === 'Pending') { %>
+                                                <i class="fas fa-clock"></i>
+                                            <% } else { %>
+                                                <i class="fas fa-exclamation-triangle"></i>
+                                            <% } %>
+                                            <%= student.feeStatus %>
+                                        </span>
+                                    </td>
+                                    <td><%= new Date(student.joinDate).toLocaleDateString() %></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <a href="/students/<%= student._id %>" class="btn btn-sm btn-info" title="View">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="/students/<%= student._id %>/edit" class="btn btn-sm btn-warning" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions Floating Button -->
+    <div class="fab-container">
+        <div class="fab-main">
+            <i class="fas fa-plus"></i>
+        </div>
+        <div class="fab-options">
+            <a href="/students/add" class="fab-option" title="Add Student">
+                <i class="fas fa-user-plus"></i>
+            </a>
+            <a href="/students" class="fab-option" title="View Students">
+                <i class="fas fa-users"></i>
+            </a>
+        </div>
+    </div>
+
+    <script src="/script.js"></script>
+</body>
+</html>

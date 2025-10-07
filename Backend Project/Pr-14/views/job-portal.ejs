@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Meta tags for better SEO -->
+    <meta name="description" content="Professional job portal for resume uploads. Submit your PDF resume securely with file validation and size limits.">
+    <meta name="keywords" content="job portal, resume upload, PDF upload, career, employment">
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="background-elements">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+        <div class="floating-shape shape-4"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-briefcase"></i>
+                    <h1>JobPortal Pro</h1>
+                </div>
+                <nav class="nav">
+                    <a href="#upload" class="nav-link">Upload Resume</a>
+                    <a href="#resumes" class="nav-link">Submitted Resumes</a>
+                    <a href="#guidelines" class="nav-link">Guidelines</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h2 class="hero-title">
+                        <i class="fas fa-upload"></i>
+                        Upload Your Resume
+                    </h2>
+                    <p class="hero-subtitle">
+                        Join our talent pool by submitting your professional resume. 
+                        We accept PDF files up to 2MB in size.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Alert Messages -->
+            <% if (error) { %>
+                <div class="alert alert-error" id="errorAlert">
+                    <div class="alert-content">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div class="alert-text">
+                            <h4>Upload Failed</h4>
+                            <p><%= error %></p>
+                        </div>
+                        <button class="alert-close" onclick="closeAlert('errorAlert')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            <% } %>
+
+            <% if (success) { %>
+                <div class="alert alert-success" id="successAlert">
+                    <div class="alert-content">
+                        <i class="fas fa-check-circle"></i>
+                        <div class="alert-text">
+                            <h4>Upload Successful!</h4>
+                            <p><%= success %></p>
+                        </div>
+                        <button class="alert-close" onclick="closeAlert('successAlert')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            <% } %>
+
+            <!-- Upload Form Section -->
+            <section class="upload-section" id="upload">
+                <div class="upload-card">
+                    <div class="upload-header">
+                        <h3>
+                            <i class="fas fa-file-upload"></i>
+                            Submit Your Application
+                        </h3>
+                        <p>Fill in your details and upload your resume in PDF format</p>
+                    </div>
+
+                    <form action="/upload-resume" method="POST" enctype="multipart/form-data" class="upload-form" id="uploadForm">
+                        <!-- Applicant Information -->
+                        <div class="form-grid">
+                            <div class="input-group">
+                                <label for="applicantName" class="input-label">
+                                    <i class="fas fa-user"></i>
+                                    Full Name
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="applicantName" 
+                                    name="applicantName" 
+                                    class="form-input"
+                                    placeholder="Enter your full name"
+                                    required
+                                    maxlength="100"
+                                >
+                            </div>
+
+                            <div class="input-group">
+                                <label for="jobPosition" class="input-label">
+                                    <i class="fas fa-briefcase"></i>
+                                    Position Applied For
+                                </label>
+                                <select id="jobPosition" name="jobPosition" class="form-select" required>
+                                    <option value="">-- Select Position --</option>
+                                    <option value="Software Developer">Software Developer</option>
+                                    <option value="Frontend Developer">Frontend Developer</option>
+                                    <option value="Backend Developer">Backend Developer</option>
+                                    <option value="Full Stack Developer">Full Stack Developer</option>
+                                    <option value="Data Scientist">Data Scientist</option>
+                                    <option value="DevOps Engineer">DevOps Engineer</option>
+                                    <option value="UI/UX Designer">UI/UX Designer</option>
+                                    <option value="Project Manager">Project Manager</option>
+                                    <option value="Business Analyst">Business Analyst</option>
+                                    <option value="Quality Assurance">Quality Assurance</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- File Upload Area -->
+                        <div class="file-upload-area" id="fileUploadArea">
+                            <div class="upload-zone" id="uploadZone">
+                                <div class="upload-content">
+                                    <div class="upload-icon">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                    </div>
+                                    <h4>Drag & Drop Your Resume Here</h4>
+                                    <p>or click to browse files</p>
+                                    <div class="file-requirements">
+                                        <span class="requirement">
+                                            <i class="fas fa-file-pdf"></i>
+                                            PDF files only
+                                        </span>
+                                        <span class="requirement">
+                                            <i class="fas fa-weight-hanging"></i>
+                                            Max 2MB
+                                        </span>
+                                    </div>
+                                </div>
+                                <input 
+                                    type="file" 
+                                    id="resume" 
+                                    name="resume" 
+                                    accept=".pdf,application/pdf"
+                                    class="file-input"
+                                    required
+                                >
+                            </div>
+
+                            <!-- File Preview -->
+                            <div class="file-preview" id="filePreview" style="display: none;">
+                                <div class="file-info">
+                                    <div class="file-icon">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </div>
+                                    <div class="file-details">
+                                        <h5 id="fileName">resume.pdf</h5>
+                                        <p id="fileSize">1.2 MB</p>
+                                        <div class="file-status" id="fileStatus">
+                                            <i class="fas fa-check-circle"></i>
+                                            Valid PDF file
+                                        </div>
+                                    </div>
+                                    <button type="button" class="remove-file" id="removeFile">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Upload Guidelines -->
+                        <div class="upload-guidelines" id="guidelines">
+                            <h4>
+                                <i class="fas fa-info-circle"></i>
+                                Upload Guidelines
+                            </h4>
+                            <ul>
+                                <li><i class="fas fa-check"></i> Only PDF files are accepted</li>
+                                <li><i class="fas fa-check"></i> Maximum file size is 2MB</li>
+                                <li><i class="fas fa-check"></i> Ensure your resume is professionally formatted</li>
+                                <li><i class="fas fa-check"></i> Include your contact information</li>
+                                <li><i class="fas fa-check"></i> File names should not contain special characters</li>
+                            </ul>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="clearForm()">
+                                <i class="fas fa-eraser"></i>
+                                Clear Form
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                <i class="fas fa-upload"></i>
+                                Upload Resume
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Upload Success Details -->
+            <% if (uploadedFile) { %>
+                <section class="upload-success">
+                    <div class="success-card">
+                        <div class="success-header">
+                            <i class="fas fa-check-circle"></i>
+                            <h3>Application Submitted Successfully!</h3>
+                        </div>
+                        <div class="success-details">
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <label>Applicant Name:</label>
+                                    <span><%= uploadedFile.applicantName %></span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>Position:</label>
+                                    <span><%= uploadedFile.jobPosition %></span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>File Name:</label>
+                                    <span><%= uploadedFile.originalName %></span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>File Size:</label>
+                                    <span><%= uploadedFile.size %></span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>Upload Date:</label>
+                                    <span><%= uploadedFile.uploadDate %> at <%= uploadedFile.uploadTime %></span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>Application ID:</label>
+                                    <span><%= uploadedFile.filename %></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            <% } %>
+
+            <!-- Submitted Resumes Section -->
+            <section class="resumes-section" id="resumes">
+                <div class="resumes-header">
+                    <h3>
+                        <i class="fas fa-folder-open"></i>
+                        Submitted Resumes
+                        <span class="count-badge"><%= totalUploads %></span>
+                    </h3>
+                    <p>View all recently submitted applications</p>
+                </div>
+
+                <% if (uploadedResumes && uploadedResumes.length > 0) { %>
+                    <div class="resumes-grid">
+                        <% uploadedResumes.forEach((resume, index) => { %>
+                            <div class="resume-card" data-index="<%= index %>">
+                                <div class="resume-header">
+                                    <div class="resume-icon">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </div>
+                                    <div class="resume-info">
+                                        <h4><%= resume.originalName %></h4>
+                                        <p class="resume-size"><%= resume.size %></p>
+                                    </div>
+                                </div>
+                                <div class="resume-meta">
+                                    <div class="meta-item">
+                                        <i class="fas fa-calendar"></i>
+                                        <span><%= resume.uploadDate %></span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <i class="fas fa-clock"></i>
+                                        <span><%= resume.uploadTime %></span>
+                                    </div>
+                                </div>
+                                <div class="resume-actions">
+                                    <a href="/download/<%= resume.filename %>" class="btn btn-sm btn-outline">
+                                        <i class="fas fa-download"></i>
+                                        Download
+                                    </a>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteResume('<%= resume.filename %>', '<%= index %>')">
+                                        <i class="fas fa-trash"></i>
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                <% } else { %>
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-inbox"></i>
+                        </div>
+                        <h4>No Resumes Submitted Yet</h4>
+                        <p>Be the first to submit your resume and join our talent pool!</p>
+                    </div>
+                <% } %>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-text">
+                    <p>&copy; 2025 JobPortal Pro. All rights reserved.</p>
+                    <p>Secure resume upload with file validation and size limits.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#upload">Upload</a>
+                    <a href="#resumes">Resumes</a>
+                    <a href="#guidelines">Guidelines</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/script.js"></script>
+</body>
+</html>

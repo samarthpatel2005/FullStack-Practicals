@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Tuition Admin</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="/students" class="nav-link"><i class="fas fa-users"></i> Students</a></li>
+                <li><a href="/students/add" class="nav-link active"><i class="fas fa-user-plus"></i> Add Student</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Header -->
+        <div class="page-header">
+            <h1><i class="fas fa-user-plus"></i> Add New Student</h1>
+            <p>Register a new student to your tuition class</p>
+        </div>
+
+        <!-- Alert Messages -->
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-error" id="alert">
+                <i class="fas fa-exclamation-triangle"></i>
+                <%= error %>
+            </div>
+        <% } %>
+
+        <!-- Add Student Form -->
+        <div class="form-container">
+            <form action="/students" method="POST" class="student-form" id="addStudentForm">
+                <!-- Student Information -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user"></i> Student Information</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name" class="form-label">
+                                <i class="fas fa-user"></i> Full Name *
+                            </label>
+                            <input type="text" id="name" name="name" class="form-input" 
+                                   placeholder="Enter student's full name" 
+                                   value="<%= typeof formData !== 'undefined' ? formData.name || '' : '' %>" 
+                                   required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email" class="form-label">
+                                <i class="fas fa-envelope"></i> Email Address *
+                            </label>
+                            <input type="email" id="email" name="email" class="form-input" 
+                                   placeholder="Enter email address" 
+                                   value="<%= typeof formData !== 'undefined' ? formData.email || '' : '' %>" 
+                                   required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone" class="form-label">
+                                <i class="fas fa-phone"></i> Phone Number *
+                            </label>
+                            <input type="tel" id="phone" name="phone" class="form-input" 
+                                   placeholder="Enter phone number" 
+                                   value="<%= typeof formData !== 'undefined' ? formData.phone || '' : '' %>" 
+                                   required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="joinDate" class="form-label">
+                                <i class="fas fa-calendar"></i> Join Date *
+                            </label>
+                            <input type="date" id="joinDate" name="joinDate" class="form-input" 
+                                   value="<%= typeof formData !== 'undefined' ? formData.joinDate || new Date().toISOString().split('T')[0] : new Date().toISOString().split('T')[0] %>" 
+                                   required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Academic Information -->
+                <div class="form-section">
+                    <h3><i class="fas fa-graduation-cap"></i> Academic Information</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="class" class="form-label">
+                                <i class="fas fa-chalkboard"></i> Class *
+                            </label>
+                            <select id="class" name="class" class="form-select" required>
+                                <option value="">Select Class</option>
+                                <% classes.forEach(cls => { %>
+                                    <option value="<%= cls %>" <%= typeof formData !== 'undefined' && formData.class === cls ? 'selected' : '' %>>
+                                        Class <%= cls %>
+                                    </option>
+                                <% }); %>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject" class="form-label">
+                                <i class="fas fa-book"></i> Subject *
+                            </label>
+                            <select id="subject" name="subject" class="form-select" required>
+                                <option value="">Select Subject</option>
+                                <% subjects.forEach(subject => { %>
+                                    <option value="<%= subject %>" <%= typeof formData !== 'undefined' && formData.subject === subject ? 'selected' : '' %>>
+                                        <%= subject %>
+                                    </option>
+                                <% }); %>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fee Information -->
+                <div class="form-section">
+                    <h3><i class="fas fa-rupee-sign"></i> Fee Information</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="feeAmount" class="form-label">
+                                <i class="fas fa-rupee-sign"></i> Fee Amount *
+                            </label>
+                            <input type="number" id="feeAmount" name="feeAmount" class="form-input" 
+                                   placeholder="Enter monthly fee amount" 
+                                   value="<%= typeof formData !== 'undefined' ? formData.feeAmount || '' : '' %>" 
+                                   min="0" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="feeStatus" class="form-label">
+                                <i class="fas fa-credit-card"></i> Fee Status *
+                            </label>
+                            <select id="feeStatus" name="feeStatus" class="form-select" required>
+                                <% feeStatuses.forEach(status => { %>
+                                    <option value="<%= status %>" <%= typeof formData !== 'undefined' && formData.feeStatus === status ? 'selected' : (status === 'Pending' ? 'selected' : '') %>>
+                                        <%= status %>
+                                    </option>
+                                <% }); %>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Parent Information -->
+                <div class="form-section">
+                    <h3><i class="fas fa-users"></i> Parent Information</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="parentName" class="form-label">
+                                <i class="fas fa-user-tie"></i> Parent/Guardian Name *
+                            </label>
+                            <input type="text" id="parentName" name="parentName" class="form-input" 
+                                   placeholder="Enter parent/guardian name" 
+                                   value="<%= typeof formData !== 'undefined' ? formData.parentName || '' : '' %>" 
+                                   required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="parentPhone" class="form-label">
+                                <i class="fas fa-phone-alt"></i> Parent Contact *
+                            </label>
+                            <input type="tel" id="parentPhone" name="parentPhone" class="form-input" 
+                                   placeholder="Enter parent's phone number" 
+                                   value="<%= typeof formData !== 'undefined' ? formData.parentPhone || '' : '' %>" 
+                                   required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Information -->
+                <div class="form-section">
+                    <h3><i class="fas fa-info-circle"></i> Additional Information</h3>
+                    
+                    <div class="form-group">
+                        <label for="address" class="form-label">
+                            <i class="fas fa-map-marker-alt"></i> Address *
+                        </label>
+                        <textarea id="address" name="address" class="form-textarea" 
+                                  placeholder="Enter complete address" 
+                                  rows="3" required><%= typeof formData !== 'undefined' ? formData.address || '' : '' %></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="notes" class="form-label">
+                            <i class="fas fa-sticky-note"></i> Notes (Optional)
+                        </label>
+                        <textarea id="notes" name="notes" class="form-textarea" 
+                                  placeholder="Any additional notes about the student" 
+                                  rows="3"><%= typeof formData !== 'undefined' ? formData.notes || '' : '' %></textarea>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/students'">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Add Student
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Form validation
+        document.getElementById('addStudentForm').addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding Student...';
+            submitBtn.disabled = true;
+        });
+
+        // Auto-hide alerts
+        const alert = document.getElementById('alert');
+        if (alert) {
+            setTimeout(() => {
+                alert.style.animation = 'slideUp 0.3s ease forwards';
+            }, 5000);
+        }
+
+        // Format phone number as user types
+        function formatPhoneNumber(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length >= 10) {
+                value = value.substring(0, 10);
+            }
+            input.value = value;
+        }
+
+        document.getElementById('phone').addEventListener('input', function() {
+            formatPhoneNumber(this);
+        });
+
+        document.getElementById('parentPhone').addEventListener('input', function() {
+            formatPhoneNumber(this);
+        });
+
+        // Auto-fill suggestions based on class and subject
+        document.getElementById('class').addEventListener('change', function() {
+            const selectedClass = this.value;
+            const feeAmountInput = document.getElementById('feeAmount');
+            
+            // Suggest fee amounts based on class
+            const suggestedFees = {
+                '6th': 3000,
+                '7th': 3000,
+                '8th': 3500,
+                '9th': 4000,
+                '10th': 4500,
+                '11th': 5000,
+                '12th': 5500
+            };
+            
+            if (suggestedFees[selectedClass] && !feeAmountInput.value) {
+                feeAmountInput.value = suggestedFees[selectedClass];
+            }
+        });
+
+        console.log('📝 Add Student Form Loaded');
+    </script>
+</body>
+</html>

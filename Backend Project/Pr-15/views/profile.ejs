@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="portal-body">
+    <!-- Header Navigation -->
+    <header class="portal-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-book-reader"></i>
+                    <h1>Library Portal</h1>
+                </div>
+                <nav class="nav">
+                    <a href="/profile" class="nav-link active">
+                        <i class="fas fa-user"></i>
+                        Profile
+                    </a>
+                    <a href="/dashboard" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </a>
+                    <% if (isAdmin) { %>
+                        <a href="/admin/sessions" class="nav-link">
+                            <i class="fas fa-users-cog"></i>
+                            Sessions
+                        </a>
+                    <% } %>
+                </nav>
+                <div class="user-menu">
+                    <span class="welcome-text">Welcome, <%= user.name %>!</span>
+                    <form action="/logout" method="POST" class="logout-form">
+                        <button type="submit" class="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Profile Header -->
+            <section class="profile-header">
+                <div class="profile-card">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="profile-info">
+                        <h2><%= user.name %></h2>
+                        <p class="username">@<%= user.username %></p>
+                        <div class="profile-meta">
+                            <span class="meta-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                Member since <%= user.registeredAt.toLocaleDateString() %>
+                            </span>
+                            <span class="meta-item">
+                                <i class="fas fa-clock"></i>
+                                <%= user.totalSessions %> total sessions
+                            </span>
+                        </div>
+                    </div>
+                    <div class="session-status">
+                        <div class="status-indicator online">
+                            <i class="fas fa-circle"></i>
+                            Online
+                        </div>
+                        <div class="session-time">
+                            Session: <span id="sessionDuration"><%= session.sessionDuration %></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Session Information -->
+            <section class="session-section">
+                <h3 class="section-title">
+                    <i class="fas fa-info-circle"></i>
+                    Current Session Information
+                </h3>
+                
+                <div class="info-grid">
+                    <div class="info-card">
+                        <div class="info-header">
+                            <i class="fas fa-id-card"></i>
+                            <h4>Session Details</h4>
+                        </div>
+                        <div class="info-content">
+                            <div class="info-row">
+                                <span class="label">Session ID:</span>
+                                <span class="value session-id"><%= session.sessionId %></span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Login Time:</span>
+                                <span class="value"><%= session.loginTimeFormatted %></span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Session Duration:</span>
+                                <span class="value duration" id="liveDuration"><%= session.sessionDuration %></span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Page Views:</span>
+                                <span class="value"><%= session.sessionData.views %></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-header">
+                            <i class="fas fa-network-wired"></i>
+                            <h4>Connection Info</h4>
+                        </div>
+                        <div class="info-content">
+                            <div class="info-row">
+                                <span class="label">IP Address:</span>
+                                <span class="value"><%= session.ipAddress %></span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Browser:</span>
+                                <span class="value browser-info" title="<%= session.userAgent %>">
+                                    <i class="fas fa-globe"></i>
+                                    <span id="browserName">Loading...</span>
+                                </span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Last Activity:</span>
+                                <span class="value" id="lastActivity"><%= session.sessionData.lastActivity %></span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Status:</span>
+                                <span class="value status-active">
+                                    <i class="fas fa-check-circle"></i>
+                                    Active
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-header">
+                            <i class="fas fa-chart-line"></i>
+                            <h4>Account Statistics</h4>
+                        </div>
+                        <div class="info-content">
+                            <div class="stat-item">
+                                <div class="stat-number"><%= user.totalSessions %></div>
+                                <div class="stat-label">Total Sessions</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number"><%= session.sessionData.views %></div>
+                                <div class="stat-label">Pages Viewed Today</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="sessionMinutes">0</div>
+                                <div class="stat-label">Minutes Online</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number"><%= totalUsers %></div>
+                                <div class="stat-label">Total Members</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Active Sessions (Admin View) -->
+            <% if (isAdmin && activeSessions.length > 0) { %>
+                <section class="admin-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-users"></i>
+                        Active Sessions (Admin View)
+                    </h3>
+                    
+                    <div class="sessions-table">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Login Time</th>
+                                    <th>Duration</th>
+                                    <th>IP Address</th>
+                                    <th>Session ID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% activeSessions.forEach(session => { %>
+                                    <tr class="<%= session.username === user.username ? 'current-session' : '' %>">
+                                        <td>
+                                            <div class="user-info">
+                                                <i class="fas fa-user-circle"></i>
+                                                <span><%= session.name %> (@<%= session.username %>)</span>
+                                                <% if (session.username === user.username) { %>
+                                                    <span class="current-badge">You</span>
+                                                <% } %>
+                                            </div>
+                                        </td>
+                                        <td><%= session.loginTime.toLocaleString() %></td>
+                                        <td class="duration-cell" data-login="<%= session.loginTime.getTime() %>">
+                                            <span class="live-duration">Calculating...</span>
+                                        </td>
+                                        <td><%= session.ipAddress %></td>
+                                        <td class="session-id-cell">
+                                            <code><%= session.sessionId %></code>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            <% } %>
+
+            <!-- Quick Actions -->
+            <section class="actions-section">
+                <h3 class="section-title">
+                    <i class="fas fa-bolt"></i>
+                    Quick Actions
+                </h3>
+                
+                <div class="action-grid">
+                    <a href="/dashboard" class="action-card">
+                        <div class="action-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <h4>Library Dashboard</h4>
+                        <p>View library statistics and browse books</p>
+                    </a>
+                    
+                    <button class="action-card" onclick="refreshSession()">
+                        <div class="action-icon">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                        <h4>Refresh Session</h4>
+                        <p>Update session information and duration</p>
+                    </button>
+                    
+                    <% if (isAdmin) { %>
+                        <a href="/admin/sessions" class="action-card">
+                            <div class="action-icon">
+                                <i class="fas fa-users-cog"></i>
+                            </div>
+                            <h4>Manage Sessions</h4>
+                            <p>View and manage all user sessions</p>
+                        </a>
+                    <% } %>
+                    
+                    <button class="action-card logout-action" onclick="confirmLogout()">
+                        <div class="action-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </div>
+                        <h4>Logout</h4>
+                        <p>End your session and sign out securely</p>
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="portal-footer">
+        <div class="container">
+            <p>&copy; 2025 Library Portal. Session management system with real-time tracking.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Session data
+        const sessionStartTime = new Date('<%= session.loginTime %>').getTime();
+        
+        // Browser detection
+        function detectBrowser() {
+            const userAgent = navigator.userAgent;
+            let browserName = 'Unknown Browser';
+            
+            if (userAgent.includes('Chrome')) browserName = 'Google Chrome';
+            else if (userAgent.includes('Firefox')) browserName = 'Mozilla Firefox';
+            else if (userAgent.includes('Safari')) browserName = 'Safari';
+            else if (userAgent.includes('Edge')) browserName = 'Microsoft Edge';
+            else if (userAgent.includes('Opera')) browserName = 'Opera';
+            
+            document.getElementById('browserName').textContent = browserName;
+        }
+        
+        // Format duration function
+        function formatDuration(milliseconds) {
+            const seconds = Math.floor(milliseconds / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            
+            if (hours > 0) {
+                return `${hours}h ${minutes % 60}m ${seconds % 60}s`;
+            } else if (minutes > 0) {
+                return `${minutes}m ${seconds % 60}s`;
+            } else {
+                return `${seconds}s`;
+            }
+        }
+        
+        // Update session duration in real-time
+        function updateSessionDuration() {
+            const now = Date.now();
+            const duration = now - sessionStartTime;
+            const formatted = formatDuration(duration);
+            
+            // Update multiple duration displays
+            document.getElementById('sessionDuration').textContent = formatted;
+            document.getElementById('liveDuration').textContent = formatted;
+            
+            // Update minutes counter
+            const minutes = Math.floor(duration / (1000 * 60));
+            document.getElementById('sessionMinutes').textContent = minutes;
+            
+            // Update last activity
+            document.getElementById('lastActivity').textContent = new Date().toLocaleString();
+        }
+        
+        // Update all session durations in admin table
+        function updateAllSessionDurations() {
+            const durationCells = document.querySelectorAll('.duration-cell');
+            durationCells.forEach(cell => {
+                const loginTime = parseInt(cell.getAttribute('data-login'));
+                const duration = Date.now() - loginTime;
+                const formatted = formatDuration(duration);
+                cell.querySelector('.live-duration').textContent = formatted;
+            });
+        }
+        
+        // Refresh session data
+        async function refreshSession() {
+            try {
+                const response = await fetch('/api/session');
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Update session info
+                    updateSessionDuration();
+                    
+                    // Show success message
+                    showNotification('Session refreshed successfully!', 'success');
+                } else {
+                    showNotification('Failed to refresh session', 'error');
+                }
+            } catch (error) {
+                console.error('Error refreshing session:', error);
+                showNotification('Error refreshing session', 'error');
+            }
+        }
+        
+        // Confirm logout
+        function confirmLogout() {
+            if (confirm('Are you sure you want to logout? This will end your current session.')) {
+                document.querySelector('.logout-form').submit();
+            }
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info'}-circle"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Show notification
+            setTimeout(() => notification.classList.add('show'), 100);
+            
+            // Hide notification after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        // Initialize page
+        function initializePage() {
+            detectBrowser();
+            updateSessionDuration();
+            updateAllSessionDurations();
+            
+            // Update durations every second
+            setInterval(() => {
+                updateSessionDuration();
+                updateAllSessionDurations();
+            }, 1000);
+            
+            console.log('📚 Profile page initialized');
+            console.log('⏱️ Real-time session tracking active');
+        }
+        
+        // Start the page
+        initializePage();
+        
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

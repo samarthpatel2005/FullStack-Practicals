@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="container">
+        <div class="card auth-card">
+            <!-- Header -->
+            <div class="card-header">
+                <div class="logo">
+                    <i class="fas fa-book-reader"></i>
+                </div>
+                <h1 class="title">Library Portal</h1>
+                <p class="subtitle">Welcome back! Please sign in to your account</p>
+            </div>
+
+            <div class="card-body">
+                <!-- Alert Messages -->
+                <% if (error) { %>
+                    <div class="alert alert-error">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span><%= error %></span>
+                    </div>
+                <% } %>
+
+                <% if (success) { %>
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle"></i>
+                        <span><%= success %></span>
+                    </div>
+                <% } %>
+
+                <!-- Login Form -->
+                <form action="/login" method="POST" id="loginForm">
+                    <div class="form-group">
+                        <label for="username" class="form-label">
+                            <i class="fas fa-user"></i>
+                            Username
+                        </label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            class="form-input" 
+                            placeholder="Enter your username"
+                            required
+                            autocomplete="username"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="form-label">
+                            <i class="fas fa-lock"></i>
+                            Password
+                        </label>
+                        <div class="password-input-group">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                class="form-input" 
+                                placeholder="Enter your password"
+                                required
+                                autocomplete="current-password"
+                            >
+                            <button type="button" class="password-toggle" onclick="togglePassword()">
+                                <i class="fas fa-eye" id="passwordToggleIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                <button type="submit" class="btn btn-primary btn-full">
+                    <i class="fas fa-sign-in-alt btn-icon"></i>
+                    Sign In
+                </button>
+            </form>
+
+                <!-- Links -->
+                <div class="text-center">
+                    <p>Don't have an account? <a href="/register">Register here</a></p>
+                </div>
+
+                <!-- Demo Users Info -->
+                <div class="demo-users">
+                    <h4 class="demo-title"><i class="fas fa-info-circle"></i> Demo Users</h4>
+                    <div class="demo-user" onclick="loginAsDemo('alice', 'password123')">
+                        <div class="demo-user-info">
+                            <strong>alice</strong><br>
+                            <small>password123</small>
+                        </div>
+                        <button type="button" class="demo-login-btn">Login</button>
+                    </div>
+                    <div class="demo-user" onclick="loginAsDemo('bob', 'password123')">
+                        <div class="demo-user-info">
+                            <strong>bob</strong><br>
+                            <small>password123</small>
+                        </div>
+                        <button type="button" class="demo-login-btn">Login</button>
+                    </div>
+                    <div class="demo-user" onclick="loginAsDemo('admin', 'admin123')">
+                        <div class="demo-user-info">
+                            <strong>admin</strong><br>
+                            <small>admin123</small>
+                        </div>
+                        <button type="button" class="demo-login-btn">Login</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-focus on username field
+        document.getElementById('username').focus();
+
+        // Password toggle functionality
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('passwordToggleIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Demo user quick login function
+        function loginAsDemo(username, password) {
+            document.getElementById('username').value = username;
+            document.getElementById('password').value = password;
+            
+            // Add visual feedback
+            const userDiv = event.currentTarget;
+            userDiv.style.backgroundColor = '#e0e7ff';
+            setTimeout(() => {
+                userDiv.style.backgroundColor = '';
+            }, 1000);
+        }
+
+        // Form submission with loading state
+        document.getElementById('loginForm').addEventListener('submit', function() {
+            const submitBtn = document.querySelector('.btn-primary');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+            submitBtn.disabled = true;
+        });
+
+        // Auto-hide alerts after 5 seconds
+        setTimeout(() => {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.style.animation = 'slideUp 0.3s ease forwards';
+            });
+        }, 5000);
+
+        console.log('📚 Library Portal Login Page Loaded');
+        console.log('💡 Use demo login buttons for quick access');
+    </script>
+</body>
+</html>

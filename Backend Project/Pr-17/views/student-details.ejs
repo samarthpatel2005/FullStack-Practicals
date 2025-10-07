@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Tuition Admin</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="/students" class="nav-link"><i class="fas fa-users"></i> Students</a></li>
+                <li><a href="/students/add" class="nav-link"><i class="fas fa-user-plus"></i> Add Student</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Header -->
+        <div class="page-header">
+            <div class="header-left">
+                <h1><i class="fas fa-user"></i> Student Details</h1>
+                <p>Complete information about <%= student.name %></p>
+            </div>
+            <div class="header-actions">
+                <a href="/students/<%= student._id %>/edit" class="btn btn-warning">
+                    <i class="fas fa-edit"></i> Edit Student
+                </a>
+                <a href="/students" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Students
+                </a>
+            </div>
+        </div>
+
+        <!-- Student Profile -->
+        <div class="student-profile">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <%= student.name.charAt(0).toUpperCase() %>
+                </div>
+                <div class="profile-info">
+                    <h2><%= student.name %></h2>
+                    <div class="profile-meta">
+                        <span class="class-badge">Class <%= student.class %></span>
+                        <span class="subject-badge"><%= student.subject %></span>
+                        <span class="fee-status <%= student.feeStatus.toLowerCase() %>">
+                            <% if (student.feeStatus === 'Paid') { %>
+                                <i class="fas fa-check-circle"></i>
+                            <% } else if (student.feeStatus === 'Pending') { %>
+                                <i class="fas fa-clock"></i>
+                            <% } else { %>
+                                <i class="fas fa-exclamation-triangle"></i>
+                            <% } %>
+                            <%= student.feeStatus %>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Content -->
+            <div class="profile-content">
+                <!-- Contact Information -->
+                <div class="info-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-address-card"></i> Contact Information</h3>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-envelope"></i> Email
+                            </div>
+                            <div class="info-value">
+                                <a href="mailto:<%= student.email %>"><%= student.email %></a>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-phone"></i> Phone
+                            </div>
+                            <div class="info-value">
+                                <a href="tel:<%= student.phone %>"><%= student.phone %></a>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-map-marker-alt"></i> Address
+                            </div>
+                            <div class="info-value"><%= student.address %></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Academic Information -->
+                <div class="info-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-graduation-cap"></i> Academic Information</h3>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-chalkboard"></i> Class
+                            </div>
+                            <div class="info-value">Class <%= student.class %></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-book"></i> Subject
+                            </div>
+                            <div class="info-value"><%= student.subject %></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-calendar-alt"></i> Join Date
+                            </div>
+                            <div class="info-value"><%= new Date(student.joinDate).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }) %></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fee Information -->
+                <div class="info-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-rupee-sign"></i> Fee Information</h3>
+                        <button class="btn btn-sm btn-primary" onclick="showFeeModal()">
+                            <i class="fas fa-edit"></i> Update Status
+                        </button>
+                    </div>
+                    <div class="fee-details">
+                        <div class="fee-card">
+                            <div class="fee-amount">
+                                <span class="currency">₹</span>
+                                <span class="amount"><%= student.feeAmount.toLocaleString() %></span>
+                                <span class="period">/ month</span>
+                            </div>
+                            <div class="fee-status-large <%= student.feeStatus.toLowerCase() %>">
+                                <% if (student.feeStatus === 'Paid') { %>
+                                    <i class="fas fa-check-circle"></i>
+                                <% } else if (student.feeStatus === 'Pending') { %>
+                                    <i class="fas fa-clock"></i>
+                                <% } else { %>
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                <% } %>
+                                <%= student.feeStatus %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Parent Information -->
+                <div class="info-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-users"></i> Parent/Guardian Information</h3>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-user-tie"></i> Name
+                            </div>
+                            <div class="info-value"><%= student.parentName %></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-phone-alt"></i> Contact
+                            </div>
+                            <div class="info-value">
+                                <a href="tel:<%= student.parentPhone %>"><%= student.parentPhone %></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Information -->
+                <% if (student.notes) { %>
+                    <div class="info-section">
+                        <div class="section-header">
+                            <h3><i class="fas fa-sticky-note"></i> Additional Notes</h3>
+                        </div>
+                        <div class="notes-content">
+                            <%= student.notes %>
+                        </div>
+                    </div>
+                <% } %>
+
+                <!-- System Information -->
+                <div class="info-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-info-circle"></i> System Information</h3>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-plus-circle"></i> Created
+                            </div>
+                            <div class="info-value"><%= new Date(student.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }) %></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-edit"></i> Last Updated
+                            </div>
+                            <div class="info-value"><%= new Date(student.updatedAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }) %></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-key"></i> Student ID
+                            </div>
+                            <div class="info-value"><%= student._id %></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fee Status Modal -->
+    <div id="feeStatusModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Update Fee Status for <%= student.name %></h3>
+                <span class="close" onclick="closeFeeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Current Status: <span class="fee-status <%= student.feeStatus.toLowerCase() %>"><%= student.feeStatus %></span></p>
+                <p>Select new fee status:</p>
+                <div class="fee-status-options">
+                    <button class="fee-option paid" onclick="updateFeeStatus('Paid')">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Paid</span>
+                        <small>Fee has been received</small>
+                    </button>
+                    <button class="fee-option pending" onclick="updateFeeStatus('Pending')">
+                        <i class="fas fa-clock"></i>
+                        <span>Pending</span>
+                        <small>Fee is yet to be paid</small>
+                    </button>
+                    <button class="fee-option overdue" onclick="updateFeeStatus('Overdue')">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Overdue</span>
+                        <small>Fee payment is overdue</small>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showFeeModal() {
+            document.getElementById('feeStatusModal').style.display = 'block';
+        }
+
+        function closeFeeModal() {
+            document.getElementById('feeStatusModal').style.display = 'none';
+        }
+
+        async function updateFeeStatus(newStatus) {
+            const studentId = '<%= student._id %>';
+            
+            try {
+                const response = await fetch(`/students/${studentId}/fee-status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ feeStatus: newStatus })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    location.reload();
+                } else {
+                    alert('Failed to update fee status: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to update fee status');
+            }
+
+            closeFeeModal();
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('feeStatusModal');
+            if (event.target === modal) {
+                closeFeeModal();
+            }
+        }
+
+        console.log('👤 Student Details Page Loaded for: <%= student.name %>');
+    </script>
+</body>
+</html>

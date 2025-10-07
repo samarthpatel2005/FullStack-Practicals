@@ -9,12 +9,16 @@
     "start:pr11": "node Pr-11/server.js",
     "start:pr12": "node Pr-12/server.js",
     "start:pr13": "node Pr-13/server.js",
+    "start:pr14": "node Pr-14/server.js",
+    "start:pr17": "node Pr-17/server.js",
     "pr8": "node Pr-8/server.js",
     "pr9": "node Pr-9/server.js",
     "pr10": "node Pr-10/server.js",
     "pr11": "node Pr-11/server.js",
     "pr12": "node Pr-12/server.js",
     "pr13": "node Pr-13/server.js",
+    "pr14": "node Pr-14/server.js",
+    "pr17": "node Pr-17/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -22,7 +26,12 @@
   "license": "ISC",
   "description": "Backend project containing Practical 8 and Practical 9",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "ejs": "^3.1.10",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "mongoose": "^8.19.1",
+    "multer": "^1.4.5-lts.1",
+    "socket.io": "^4.8.1"
   }
 }

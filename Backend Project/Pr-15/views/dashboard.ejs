@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="portal-body">
+    <!-- Header Navigation -->
+    <header class="portal-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-book-reader"></i>
+                    <h1>Library Portal</h1>
+                </div>
+                <nav class="nav">
+                    <a href="/profile" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        Profile
+                    </a>
+                    <a href="/dashboard" class="nav-link active">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </a>
+                </nav>
+                <div class="user-menu">
+                    <span class="welcome-text">Welcome, <%= user.name %>!</span>
+                    <form action="/logout" method="POST" class="logout-form">
+                        <button type="submit" class="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Dashboard Header -->
+            <section class="dashboard-header">
+                <div class="dashboard-title">
+                    <h2>
+                        <i class="fas fa-chart-line"></i>
+                        Library Dashboard
+                    </h2>
+                    <p>Your personalized library portal overview</p>
+                </div>
+                <div class="session-info-mini">
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Session: <span id="sessionTime"><%= session.sessionDuration %></span></span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-eye"></i>
+                        <span>Views: <%= session.sessionData.views %></span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Library Statistics -->
+            <section class="stats-section">
+                <h3 class="section-title">
+                    <i class="fas fa-chart-bar"></i>
+                    Library Statistics
+                </h3>
+                
+                <div class="stats-grid">
+                    <div class="stat-card books">
+                        <div class="stat-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number"><%= stats.totalBooks.toLocaleString() %></div>
+                            <div class="stat-label">Total Books</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                +<%= stats.newBooks %> this month
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card available">
+                        <div class="stat-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number"><%= stats.availableBooks.toLocaleString() %></div>
+                            <div class="stat-label">Available Books</div>
+                            <div class="stat-percentage">
+                                <%= Math.round((stats.availableBooks / stats.totalBooks) * 100) %>% available
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card borrowed">
+                        <div class="stat-icon">
+                            <i class="fas fa-hand-holding"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number"><%= stats.borrowedBooks.toLocaleString() %></div>
+                            <div class="stat-label">Books Borrowed</div>
+                            <div class="stat-percentage">
+                                <%= Math.round((stats.borrowedBooks / stats.totalBooks) * 100) %>% in circulation
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card members">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number"><%= stats.totalMembers %></div>
+                            <div class="stat-label">Total Members</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-user-plus"></i>
+                                <%= stats.activeMembers %> online now
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Popular Books -->
+            <section class="books-section">
+                <h3 class="section-title">
+                    <i class="fas fa-star"></i>
+                    Popular Books
+                </h3>
+                
+                <div class="books-grid">
+                    <% stats.popularBooks.forEach((book, index) => { %>
+                        <div class="book-card">
+                            <div class="book-rank">#<%= index + 1 %></div>
+                            <div class="book-cover">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="book-info">
+                                <h4><%= book %></h4>
+                                <p class="book-stats">
+                                    <i class="fas fa-download"></i>
+                                    <%= Math.floor(Math.random() * 500) + 100 %> borrows
+                                </p>
+                                <div class="book-rating">
+                                    <% for(let i = 0; i < 5; i++) { %>
+                                        <i class="fas fa-star <%= i < 4 ? 'rated' : '' %>"></i>
+                                    <% } %>
+                                    <span>4.0</span>
+                                </div>
+                            </div>
+                            <button class="book-action">
+                                <i class="fas fa-plus"></i>
+                                Add to List
+                            </button>
+                        </div>
+                    <% }); %>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="quick-actions">
+                <h3 class="section-title">
+                    <i class="fas fa-bolt"></i>
+                    Quick Actions
+                </h3>
+                
+                <div class="action-grid">
+                    <button class="action-btn search" onclick="openSearch()">
+                        <i class="fas fa-search"></i>
+                        <span>Search Books</span>
+                    </button>
+                    
+                    <button class="action-btn browse" onclick="openBrowse()">
+                        <i class="fas fa-th-large"></i>
+                        <span>Browse Categories</span>
+                    </button>
+                    
+                    <button class="action-btn history" onclick="openHistory()">
+                        <i class="fas fa-history"></i>
+                        <span>Reading History</span>
+                    </button>
+                    
+                    <button class="action-btn recommendations" onclick="openRecommendations()">
+                        <i class="fas fa-magic"></i>
+                        <span>Recommendations</span>
+                    </button>
+                    
+                    <a href="/profile" class="action-btn profile">
+                        <i class="fas fa-user-cog"></i>
+                        <span>Profile Settings</span>
+                    </a>
+                    
+                    <button class="action-btn help" onclick="openHelp()">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Help & Support</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Recent Activity -->
+            <section class="activity-section">
+                <h3 class="section-title">
+                    <i class="fas fa-clock"></i>
+                    Recent Activity
+                </h3>
+                
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon login">
+                            <i class="fas fa-sign-in-alt"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h4>Logged in to Library Portal</h4>
+                            <p>Session started at <%= session.loginTimeFormatted %></p>
+                            <time><%= session.sessionDuration %> ago</time>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon view">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h4>Viewed Dashboard</h4>
+                            <p>Accessed library statistics and popular books</p>
+                            <time>Just now</time>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon profile">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h4>Profile Information</h4>
+                            <p>Member since <%= user.registeredAt.toLocaleDateString() %></p>
+                            <time><%= user.totalSessions %> total sessions</time>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="portal-footer">
+        <div class="container">
+            <p>&copy; 2025 Library Portal. Digital library management with session tracking.</p>
+        </div>
+    </footer>
+
+    <!-- Search Modal -->
+    <div id="searchModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-search"></i> Search Books</h3>
+                <button class="modal-close" onclick="closeModal('searchModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="search-form">
+                    <input type="text" placeholder="Search by title, author, or ISBN..." class="search-input">
+                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <p>Search functionality would be implemented here in a real library system.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Session tracking
+        const sessionStartTime = new Date('<%= session.loginTime %>').getTime();
+        
+        // Update session time
+        function updateSessionTime() {
+            const now = Date.now();
+            const duration = now - sessionStartTime;
+            const formatted = formatDuration(duration);
+            document.getElementById('sessionTime').textContent = formatted;
+        }
+        
+        // Format duration
+        function formatDuration(milliseconds) {
+            const seconds = Math.floor(milliseconds / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            
+            if (hours > 0) {
+                return `${hours}h ${minutes % 60}m`;
+            } else if (minutes > 0) {
+                return `${minutes}m ${seconds % 60}s`;
+            } else {
+                return `${seconds}s`;
+            }
+        }
+        
+        // Quick action functions
+        function openSearch() {
+            document.getElementById('searchModal').style.display = 'flex';
+            document.querySelector('.search-input').focus();
+        }
+        
+        function openBrowse() {
+            showNotification('Browse Categories feature would open here', 'info');
+        }
+        
+        function openHistory() {
+            showNotification('Reading History feature would open here', 'info');
+        }
+        
+        function openRecommendations() {
+            showNotification('Book Recommendations feature would open here', 'info');
+        }
+        
+        function openHelp() {
+            showNotification('Help & Support feature would open here', 'info');
+        }
+        
+        // Modal functions
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info'}-circle"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.classList.add('show'), 100);
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        // Book action buttons
+        document.querySelectorAll('.book-action').forEach(button => {
+            button.addEventListener('click', function() {
+                const bookTitle = this.closest('.book-card').querySelector('h4').textContent;
+                showNotification(`"${bookTitle}" added to your reading list!`, 'success');
+                
+                this.innerHTML = '<i class="fas fa-check"></i> Added';
+                this.style.backgroundColor = '#10b981';
+                this.disabled = true;
+            });
+        });
+        
+        // Initialize page
+        function initializePage() {
+            updateSessionTime();
+            setInterval(updateSessionTime, 1000);
+            
+            console.log('📊 Dashboard initialized');
+            console.log('📚 Library statistics loaded');
+        }
+        
+        // Close modals when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 'k':
+                        e.preventDefault();
+                        openSearch();
+                        break;
+                    case 'h':
+                        e.preventDefault();
+                        openHelp();
+                        break;
+                }
+            }
+            
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.style.display = 'none';
+                });
+            }
+        });
+        
+        // Start the dashboard
+        initializePage();
+    </script>
+</body>
+</html>
